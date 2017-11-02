@@ -7,3 +7,5 @@ venv/
 
 # Rope project settings
 .ropeproject
+
+*.db
