@@ -27,12 +27,10 @@ python main.py run
 
 ## Endpoints
 
-| name    | method | parameters | description                   |
-|---------+--------+------------+-------------------------------|
+| Name    | Method | Parameters | Description                   |
+|---------|--------|------------|-------------------------------|
 | /blocks | GET    |            | List blocks in chain          |
-|---------+--------+------------+-------------------------------|
 | /mine   | GET    |            | Mine new block with test data |
-|---------+--------+------------+-------------------------------|
 
 ## Requirements
 * python => 3.5
