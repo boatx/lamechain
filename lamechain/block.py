@@ -72,4 +72,4 @@ class UnminedBlock(BaseBlock):
 
 def create_genesis_block():
     pre_block = Block(index=-1, hash='')
-    return pre_block.get_unmined_block(block_data='genesis block').mine_block()
+    return pre_block.get_unmined_block(block_data='genesis block').mine()
