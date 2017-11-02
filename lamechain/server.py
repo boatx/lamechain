@@ -1,6 +1,6 @@
 from aiohttp import web
 
-from chain import Chain
+from lamechain.chain import Chain
 
 
 class LocalClient:

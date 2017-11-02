@@ -1,6 +1,6 @@
 import shelve
 
-from block import Block, create_genesis_block
+from lamechain.block import Block, create_genesis_block
 
 
 class Chain:
