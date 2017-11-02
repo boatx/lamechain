@@ -32,10 +32,13 @@ class Chain:
             self._node_blocks = [Block(block) for block in db['blocks']]
         return self._node_blocks
 
+    def dump(self):
+        return [dict(block) for block in self._node_blocks]
+
     def add_block(self, block):
         self._node_blocks.append(block)
         with shelve.open(self.chain_db) as db:
-            db['blocks'].append(dict(block))
+            db['blocks'] = self.dump()
 
     def mine_block(self, data):
         unmined_block = self.last_block.get_unmined_block(data)
