@@ -3,7 +3,8 @@ from aiohttp import web
 from lamechain.chain import Chain
 
 
-class LocalClient:
+class LocalServer:
+
     def __init__(self):
         self.chain = None
 
@@ -16,24 +17,23 @@ class LocalClient:
         return web.json_response({'blocks': blocks})
 
     async def mine(self, request):
+        # TODO pass data on post
         block = self.chain.mine_block(data='test')
         self.chain.add_block(block)
         return web.json_response(dict(block))
 
+    def setup_routes(self, app):
+        app.router.add_route('GET', '/blocks', self.get_blocks)
+        app.router.add_route('GET', '/mine', self.mine)
 
-def setup_app():
-    local_handler = LocalClient()
-    app = web.Application()
-    app.router.add_route('GET', '/blocks', local_handler.get_blocks)
-    app.router.add_route('GET', '/mine', local_handler.mine)
-    app.on_startup.append(local_handler.on_startup)
-    return app
+    def get_app(self):
+        app = web.Application()
+        self.setup_routes(app)
+        app.on_startup.append(self.on_startup)
+        return app
 
 
 def main():
-    app = setup_app()
+    local_server = LocalServer()
+    app = local_server.get_app()
     web.run_app(app, host='localhost', port=8888)
-
-
-if __name__ == "__main__":
-    main()
