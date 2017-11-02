@@ -59,7 +59,7 @@ class Block(BaseBlock):
 
 class UnminedBlock(BaseBlock):
 
-    def mine_block(self):
+    def mine(self):
         self['hash'] = self.calculate_hash()
         while not self.validate_hash():
             self['nonce'] += 1
