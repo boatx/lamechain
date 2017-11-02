@@ -33,7 +33,7 @@ class LocalServer:
         return app
 
 
-def main():
+def run_local_server():
     local_server = LocalServer()
     app = local_server.get_app()
     web.run_app(app, host='localhost', port=8888)

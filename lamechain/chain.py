@@ -1,11 +1,14 @@
+import logging
 import shelve
 
 from lamechain.block import Block, create_genesis_block
 
+log = logging.getLogger(__name__)
+
+DB_FILENAME = 'chain.db'
+
 
 class Chain:
-
-    DB_FILENAME = 'chain.db'
 
     def __init__(self, chain_db=DB_FILENAME):
         self._node_blocks = []
@@ -28,7 +31,7 @@ class Chain:
         :returns: list of blocks
 
         """
-        with shelve.open(self.DB_FILENAME) as db:
+        with shelve.open(self.chain_db) as db:
             self._node_blocks = [Block(block) for block in db['blocks']]
         return self._node_blocks
 
@@ -48,7 +51,8 @@ class Chain:
         return new_block.validate_block(previous_block)
 
 
-def initialize_db(file_name):
+def initialize_db(file_name=DB_FILENAME):
     genesis_block = create_genesis_block()
     with shelve.open(file_name) as db:
         db['blocks'] = [dict(genesis_block)]
+    log.info('Database file: {} has been created'.format(file_name))
