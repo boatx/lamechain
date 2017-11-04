@@ -25,11 +25,13 @@ def get_arguments():
 
 def main():
     args = get_arguments()
-    try:
+    func = actions.get(args.action[0])
+
+    if func:
         return actions[args.action[0]]()
-    except KeyError:
-        log.error('Invalid action {}'.format(args.action))
-        sys.exit(1)
+
+    log.error('Invalid action {}'.format(args.action))
+    sys.exit(1)
 
 
 if __name__ == "__main__":

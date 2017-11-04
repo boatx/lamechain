@@ -25,12 +25,20 @@ python main.py run
 
 ```
 
+To create new block:
+
+```bash
+
+curl --data 'data=Test' http://localhost:8888/mine
+
+```
+
 ## Endpoints
 
-| Name    | Method | Parameters | Description                   |
-|---------|--------|------------|-------------------------------|
-| /blocks | GET    |            | List blocks in chain          |
-| /mine   | GET    |            | Mine new block with test data |
+| Name    | Method | Parameters                        | Description                   |
+|---------|--------|-----------------------------------|-------------------------------|
+| /blocks | GET    |                                   | List blocks in chain          |
+| /mine   | POST   | data -- data tu use in blockchain | Mine new block with test data |
 
 ## Requirements
 * python => 3.5
