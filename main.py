@@ -1,38 +1,27 @@
-import argparse
 import logging
-import sys
 
 from lamechain.chain import initialize_db
 from lamechain.server import run_local_server
-
+from lamechain.utils.manager import Manager
 
 log = logging.getLogger(__name__)
 
 logging.basicConfig(level=logging.INFO)
 
-actions = {
-    'run': run_local_server,
-    'initialize': initialize_db
-}
+manager = Manager()
 
 
-def get_arguments():
-    valid_actions = list(actions.keys())
-    parser = argparse.ArgumentParser()
-    parser.add_argument('action', nargs=1, choices=valid_actions)
-    return parser.parse_args()
+@manager.option('--port', type=int)
+def run(port):
+    """Run local chain server"""
+    return run_local_server(port)
 
 
-def main():
-    args = get_arguments()
-    func = actions.get(args.action[0])
-
-    if func:
-        return actions[args.action[0]]()
-
-    log.error('Invalid action {}'.format(args.action))
-    sys.exit(1)
+@manager.option('--file', dest='file_name', type=str)
+def init(file_name):
+    """Initialize db with genesis block"""
+    return initialize_db(file_name)
 
 
 if __name__ == "__main__":
-    main()
+    manager.run_command()
