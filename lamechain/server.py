@@ -39,7 +39,7 @@ class LocalServer:
         return app
 
 
-def run_local_server():
+def run_local_server(port):
     local_server = LocalServer()
     app = local_server.get_app()
-    web.run_app(app, host='localhost', port=8888, loop=local_server.loop)
+    web.run_app(app, host='localhost', port=port, loop=local_server.loop)
