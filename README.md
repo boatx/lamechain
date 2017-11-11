@@ -8,11 +8,11 @@ Naive block chain implementation in Python.
 
 ## Usage
 
-To create initial database with [genesesis block](https://en.bitcoin.it/wiki/Genesis_block) call:
+To create initial database in file `chain.db` with [genesesis block](https://en.bitcoin.it/wiki/Genesis_block) call:
 
 ```bash
 
-python main.py initialize
+python main.py init --file chain.db
 
 ```
 
@@ -21,7 +21,7 @@ To call operations on chain start local http server. To start server on address
 
 ```bash
 
-python main.py run
+python main.py run --port 8888
 
 ```
 
