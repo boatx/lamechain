@@ -1,8 +1,9 @@
 import logging
 
+from command_manager import Manager
+
 from lamechain.chain import initialize_db
 from lamechain.server import run_local_server
-from lamechain.utils.manager import Manager
 
 log = logging.getLogger(__name__)
 
