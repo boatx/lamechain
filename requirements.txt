@@ -1,2 +1,2 @@
 aiohttp
-git+https://github.com/boatx/command_manager@v1.0
+git+https://github.com/boatx/command_manager@v1.1
