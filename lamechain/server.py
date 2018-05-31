@@ -30,7 +30,7 @@ class LocalServer:
 
     def setup_routes(self, app):
         app.router.add_route('GET', '/blocks', self.get_blocks)
-        app.router.add_route('POST', '/mine', self.mine_handler)
+        app.router.add_route('POST', '/blocks', self.mine_handler)
 
     def get_app(self):
         app = web.Application()

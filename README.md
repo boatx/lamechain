@@ -38,8 +38,8 @@ curl --data 'data=Test' http://localhost:8888/mine
 | Name      | Method | Parameters                        | Description                   |
 |-----------|--------|-----------------------------------|-------------------------------|
 | `/blocks` | `GET`  |                                   | List blocks in chain          |
-| `/mine`   | `POST` | data -- data to use in blockchain | Mine new block with test data |
+| ^         | `POST` | data -- data to use in blockchain | Mine new block with test data |
 
 ## Requirements
-* python => 3.5.3
+* python => 3.6
 
