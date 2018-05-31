@@ -1,5 +1,3 @@
-import argparse
-import asyncio
 import logging
 
 from aiohttp import web, ClientSession, WSMsgType, ClientConnectorError
@@ -10,8 +8,7 @@ log = logging.getLogger(__name__)
 
 
 class P2PClient:
-    def __init__(self, initial_peers_addresses=None, loop=None):
-        self.loop = loop or asyncio.get_event_loop()
+    def __init__(self, initial_peers_addresses=None):
         self.peers = {}
         self.initial_peers_addresses = initial_peers_addresses or []
 
@@ -64,20 +61,7 @@ class P2PClient:
 
 
 def run_p2p_client(host, port, peers=None):
+    peers = peers or []
     p2p = P2PClient(initial_peers_addresses=peers)
     app = p2p.get_app()
-    web.run_app(app, host=host, port=port, loop=p2p.loop)
-
-
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('host', type=str, nargs=1)
-    parser.add_argument('port', type=int, nargs=1)
-    parser.add_argument('--peers', nargs='*')
-    options = parser.parse_args()
-    run_p2p_client(
-        host=options.host[0], port=options.port[0], peers=options.peers)
-
-
-if __name__ == "__main__":
-    main()
+    web.run_app(app, host=host, port=port)

@@ -7,11 +7,10 @@ from lamechain.chain import Chain
 
 class LocalServer:
 
-    def __init__(self, loop=None):
+    def __init__(self):
         self.chain = None
-        self.loop = loop or asyncio.get_event_loop()
 
-    def on_startup(self, app):
+    def sync_chain(self):
         self.chain = Chain()
         self.chain.sync()
 
@@ -25,7 +24,8 @@ class LocalServer:
 
     async def mine_handler(self, request):
         post_data = await request.post()
-        self.loop.create_task(self.mine(post_data['data']))
+        loop = asyncio.get_event_loop()
+        loop.create_task(self.mine(post_data['data']))
         return web.json_response({'status': 'ok'})
 
     def setup_routes(self, app):
@@ -35,11 +35,11 @@ class LocalServer:
     def get_app(self):
         app = web.Application()
         self.setup_routes(app)
-        app.on_startup.append(self.on_startup)
+        self.sync_chain()
         return app
 
 
 def run_local_server(port):
     local_server = LocalServer()
     app = local_server.get_app()
-    web.run_app(app, host='localhost', port=port, loop=local_server.loop)
+    web.run_app(app, host='localhost', port=port)
