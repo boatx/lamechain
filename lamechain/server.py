@@ -2,9 +2,8 @@ import asyncio
 import logging
 
 from aiohttp import web
-
 from lamechain.block import Block
-from lamechain.chain import Chain, DB_FILENAME
+from lamechain.chain import DB_FILENAME, Chain
 from lamechain.p2p_client import P2PClient
 
 logging.basicConfig(level=logging.INFO)
@@ -12,7 +11,6 @@ log = logging.getLogger(__name__)
 
 
 class LocalServer:
-
     def __init__(self, chain_db=DB_FILENAME):
         self.chain = None
         self.chain_db = chain_db
@@ -28,17 +26,17 @@ class LocalServer:
 
     async def get_blocks_handler(self, request):
         blocks = [dict(block) for block in self.chain.node_blocks[::-1]]
-        return web.json_response({'blocks': blocks})
+        return web.json_response({"blocks": blocks})
 
     async def mine_handler(self, request):
         post_data = await request.post()
         loop = asyncio.get_event_loop()
-        loop.create_task(self.mine(post_data['data']))
-        return web.json_response({'status': 'ok'})
+        loop.create_task(self.mine(post_data["data"]))
+        return web.json_response({"status": "ok"})
 
     def setup_routes(self, app):
-        app.router.add_route('GET', '/blocks', self.get_blocks_handler)
-        app.router.add_route('POST', '/blocks', self.mine_handler)
+        app.router.add_route("GET", "/blocks", self.get_blocks_handler)
+        app.router.add_route("POST", "/blocks", self.mine_handler)
 
     def get_app(self):
         app = web.Application()
@@ -58,9 +56,9 @@ class Server(LocalServer):
 
     async def handle_new_block(self, block):
         block = Block(**block)
-        log.info('New block: %s', block)
+        log.info("New block: %s", block)
         if self.chain.validate_block():
-            log.info('adding new block')
+            log.info("adding new block")
             self.chain.add_block(block)
 
     def run(self, p2p_port=8080, http_port=8090):
@@ -71,15 +69,13 @@ class Server(LocalServer):
         loop = asyncio.get_event_loop()
         loop.run_until_complete(p2p_runner.setup())
         loop.run_until_complete(server_runner.setup())
-        p2p_site = web.TCPSite(p2p_runner, 'localhost', p2p_port)
-        server_site = web.TCPSite(server_runner, 'localhost', http_port)
+        p2p_site = web.TCPSite(p2p_runner, "localhost", p2p_port)
+        server_site = web.TCPSite(server_runner, "localhost", http_port)
         loop.run_until_complete(p2p_site.start())
         loop.run_until_complete(server_site.start())
 
         try:
-            if print:  # pragma: no branch
-                print("======== Running ========\n"
-                      "(Press CTRL+C to quit)")
+            print("======== Running ========\n (Press CTRL+C to quit)")
             loop.run_forever()
         except KeyboardInterrupt:  # pragma: no cover
             pass
@@ -88,4 +84,4 @@ class Server(LocalServer):
 def run_local_server(port):
     local_server = LocalServer()
     app = local_server.get_app()
-    web.run_app(app, host='localhost', port=port)
+    web.run_app(app, host="localhost", port=port)

@@ -18,14 +18,14 @@ class P2PClient:
         self._session = ClientSession()
         loop = asyncio.get_event_loop()
         for peer_addres in self._peers_addresses:
-            _, host = peer_addres.split('://')
+            _, host = peer_addres.split("://")
             try:
                 ws = await self._session.ws_connect(peer_addres)
-                log.info('connecting to %s', peer_addres)
-                await ws.send_str('INITIAL')
+                log.info("connecting to %s", peer_addres)
+                await ws.send_str("INITIAL")
                 loop.create_task(self.handle_response(ws))
             except ClientConnectorError:
-                log.warning('Cannot connect to %s', host)
+                log.warning("Cannot connect to %s", host)
 
     async def send_block(self, block):
         for ws in self.peers:
@@ -37,24 +37,25 @@ class P2PClient:
             if msg.type == WSMsgType.TEXT:
                 await self.handle_message(msg.data)
             elif msg.type == WSMsgType.ERROR:
-                log.error('ws connection closed with exception {}'.format(
-                    ws.exception()))
+                log.error(
+                    "ws connection closed with exception {}".format(ws.exception())
+                )
         self.peers.remove(ws)
 
     async def websocket_handler(self, request):
         ws = web.WebSocketResponse()
         await ws.prepare(request)
         peername = request.remote
-        log.info('new peer connected: %s', peername)
+        log.info("new peer connected: %s", peername)
         await self.handle_response(ws)
-        log.info('peer: %s has disconnected', peername)
+        log.info("peer: %s has disconnected", peername)
         return ws
 
     async def handle_message(self, msg):
         log.info(msg)
 
     def setup_routes(self, app):
-        app.router.add_route('GET', '/', self.websocket_handler, name='peers')
+        app.router.add_route("GET", "/", self.websocket_handler, name="peers")
 
     def get_app(self):
         app = web.Application()
