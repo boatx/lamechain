@@ -6,8 +6,3 @@ name = "pypi"
 [packages]
 aiohttp = "*"
 command_manager = {git = "https://github.com/boatx/command_manager", ref = "v1.1"}
-
-[dev-packages]
-
-[requires]
-python_version = "3.6"
