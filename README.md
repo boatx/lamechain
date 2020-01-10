@@ -29,7 +29,7 @@ To create new block:
 
 ```bash
 
-curl --data 'data=Test' http://localhost:8888/mine
+curl --data 'data=Test' http://localhost:8888/blocks
 
 ```
 
