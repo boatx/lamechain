@@ -8,7 +8,7 @@ Naive block chain implementation in Python.
 
 ## Usage
 
-To create initial database in file `chain.db` with [genesesis block](https://en.bitcoin.it/wiki/Genesis_block) call:
+To create initial database in file `chain.db` with [genesis block](https://en.bitcoin.it/wiki/Genesis_block) call:
 
 ```bash
 
